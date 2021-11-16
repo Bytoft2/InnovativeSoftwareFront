@@ -1,6 +1,6 @@
 
 
-static class User {
+class User {
     
     tags = []
     devices = []
