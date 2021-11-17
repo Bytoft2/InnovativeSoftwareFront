@@ -1,47 +1,54 @@
+import * as React from 'react';
 
-
-class User {
+export default class User extends React.Component {
     
-    tags = []
-    devices = []
+    constructor(props) {
+        super(props)
+        this.state = {
+            tags: [],
+            devices: []
+        }
+    }
 
-    get tags(){
-        return this.tags;
+
+    getTags(){
+        return this.state.tags;
     }
 
     addTag(tag){
-        for( var i = 0; i < this.tags.length; i++){ 
-            if ( this.tags[i] === tag) { 
+        for( var i = 0; i < this.state.tags.length; i++){ 
+            if ( this.state.tags[i] === tag) { 
                 return
             }
         }
-        this.tags.push(tag);
+        this.state.tags.push(tag);
     }
 
     removeTag(tag){
-        for( var i = 0; i < this.tags.length; i++){ 
-            if ( this.tags[i] === tag) { 
+        for( var i = 0; i < this.state.tags.length; i++){ 
+            if ( this.state.tags[i] === tag) { 
                 arr.splice(i, 1); 
             }
         }
     }
 
-    get devices(){
-        return this.devices;
+    getDevices(){
+        return this.state.devices;
     }
 
     addDevice(device){
-        for( var i = 0; i < this.devices.length; i++){ 
-            if ( this.devices[i] === device) { 
+
+        for( var i = 0; i < this.state.devices.length; i++){ 
+            if ( this.state.devices[i].name === device.name) { 
                 return
             }
         }
-        this.devices.push(device);
+        this.state.devices.push(device);
     }
 
     removeTag(device){
-        for( var i = 0; i < this.devices.length; i++){ 
-            if ( this.devices[i] === device) { 
+        for( var i = 0; i < this.state.devices.length; i++){ 
+            if ( this.state.devices[i] === device) { 
                 arr.splice(i, 1); 
             }
         }

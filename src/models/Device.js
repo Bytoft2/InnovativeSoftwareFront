@@ -1,41 +1,48 @@
-class Device {
+import React, { Component } from "react";
+
+export default class Device extends React.Component{
+
     constructor(props){
-        this.name = props.name;
-        this.id = props.id; //The id we need to send with the request
-        this.tags = props.tags;
+        super(props);
+        this.state = {
+        name: props.name,
+        id: props.id, //The id we need to send with the request
+        tags: props.tags,
+        on: false,
+        };
     }
 
-    get tags(){
-        return this.tags;
+    getTags(){
+        return this.state.tags;
     }
 
-    get name(){
-        return this.name;
+    getName(){
+        return this.state.name;
     }
 
     addTag(tag){
-        for( var i = 0; i < this.tags.length; i++){ 
-            if ( this.tags[i] === tag) { 
+        for( var i = 0; i < this.state.tags.length; i++){ 
+            if ( this.state.tags[i].name === tag.name) { 
                 return
             }
         }
-        this.tags.push(tag);
+        this.state.tags.push(tag);
     }
 
     removeTag(tag){
-        for( var i = 0; i < this.tags.length; i++){ 
-            if ( this.tags[i] === tag) { 
+        for( var i = 0; i < this.state.tags.length; i++){ 
+            if ( this.state.tags[i] === tag) { 
                 arr.splice(i, 1); 
             }
         }
     }
 
     rename(name){
-        this.name = name;
+        this.state.name = name;
     }
 
     reroute(id){
-        this.id = id;
+        this.state.id = id;
     }
 
 }

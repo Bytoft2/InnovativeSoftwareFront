@@ -1,25 +1,35 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { Button, TextInput, Chip, Paragraph, Dialog, Portal, FAB, Provider as PaperProvider, Appbar } from 'react-native-paper';
+import { StyleSheet, Text, View, SafeAreaView, FlatList } from 'react-native';
+import { List, Button, TextInput, Chip, Dialog, Portal, FAB, Provider as PaperProvider, Appbar } from 'react-native-paper';
 import { Colors, Spacing, Styles} from '../styles';
 import Device from '../models/Device'
 import User from '../models/User'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
+import { render } from 'react-dom';
 
 export default function DevicesScreen(props) {
 
     const [state, setState] = React.useState({ open: false });
 
-    const [tagVisible, setTagVisible] = React.useState(false);
+    const [deviceVisible, setDeviceVisible] = React.useState(false);
 
-    const showDialog = () => setTagVisible(true);
+    const showDeviceDialog = () => setDeviceVisible(true);
 
-    const hideDialog = () => setTagVisible(false);
+    const hideDeviceDialog = () => setDeviceVisible(false);
 
     const onStateChange = ({ open }) => setState({ open });
   
     const { open } = state;
 
-    const _handleSearch = () => console.log("Searching")
+    const _handleSearch = () => console.log("Searching");
+
+    const [deviceName, setDeviceName] = React.useState('');
+
+
+
+    const [user, setUser] = React.useState(new User())
+
+
 
     const initialArr = [
         {
@@ -34,7 +44,7 @@ export default function DevicesScreen(props) {
             id: 3,
             name: "Appliances"
         }
-      ];
+    ];
 
     const buttonsListArr = initialArr.map((prop) => {
         return <Chip key={prop.id} style={Styles.chip} icon="information" onPress={() => console.log('Pressed')}>{prop.name}</Chip>
@@ -46,10 +56,12 @@ export default function DevicesScreen(props) {
                 <Appbar.Content title={"Devices"} />
                 <Appbar.Action icon="magnify" onPress={_handleSearch} />
             </Appbar.Header>
-
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Devices</Text>
-            </View>
+                <List.Section style={{ flex: 1}}>
+                {
+                user.getDevices().map((dev) => {
+                    return <List.Item style={{backgroundColor: Colors.main.light, marginBottom: 5}} titleStyle={{color: Colors.main.primary}} title={dev.name} />
+                })}
+                </List.Section>
             <FAB.Group
                 open={open}
                 icon={open ? 'close' : 'plus'}
@@ -57,12 +69,12 @@ export default function DevicesScreen(props) {
                     {
                         icon: 'tag',
                         label: 'Tag',
-                        onPress: () => showDialog(),
+                        onPress: () => console.log("pressed Tag"),
                     },
                     {
                         icon: 'lightbulb',
                         label: 'Device',
-                        onPress: () => console.log('Pressed device'),
+                        onPress: () => showDeviceDialog(),
                         small: false,
                     },
                 ]}
@@ -70,13 +82,15 @@ export default function DevicesScreen(props) {
                 fabStyle= {{backgroundColor: Colors.main.light}}
             />
             <Portal>
-                <Dialog visible={tagVisible} onDismiss={hideDialog}>
+                <Dialog visible={deviceVisible} onDismiss={hideDeviceDialog}>
                     <Dialog.Title>Add device</Dialog.Title>
                     <Dialog.Content>
                         <TextInput
                             mode="outlined"
                             label="Device name"
                             placeholder="Device name"
+                            value={deviceName}
+                            onChangeText={text => setDeviceName(text)}
                         />
                         <SafeAreaView style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                         {buttonsListArr}
@@ -84,14 +98,19 @@ export default function DevicesScreen(props) {
                         </SafeAreaView>
                     </Dialog.Content>
                     <Dialog.Actions>
-                        <Button style={{backgroundColor: Colors.main.light}} color={Colors.main.dark} onPress={hideDialog}>Add</Button>
+                        <Button style={{backgroundColor: Colors.main.light}} color={Colors.main.dark} onPress={() => {
+                            user.addDevice({
+                                name: deviceName,
+                                id: 1234,
+                                tags: [],
+                                on: false
+                            })
+                            setDeviceName("")
+                            hideDeviceDialog()
+                            }}>Add</Button>
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
         </PaperProvider>
     )
-
-
-
-
 }
