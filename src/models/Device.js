@@ -5,10 +5,12 @@ export default class Device extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+        deviceId: props.deviceId,
+        manufacturer: props.manufacturer,
         name: props.name,
-        id: props.id, //The id we need to send with the request
+        on: props.on,
         tags: props.tags,
-        on: false,
+        id: props.id, //The id we need to send with the request
         };
     }
 
@@ -41,8 +43,12 @@ export default class Device extends React.Component{
         this.state.name = name;
     }
 
-    reroute(id){
+    setId(id){
         this.state.id = id;
+    }
+
+    getId(){
+        return this.state.id
     }
 
 }

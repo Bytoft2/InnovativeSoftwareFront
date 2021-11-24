@@ -6,6 +6,7 @@ import Device from '../models/Device'
 import User from '../models/User'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { render } from 'react-dom';
+import  * as Coms  from '../services/coms'
 
 export default function DevicesScreen(props) {
 
@@ -24,8 +25,6 @@ export default function DevicesScreen(props) {
     const _handleSearch = () => console.log("Searching");
 
     const [deviceName, setDeviceName] = React.useState('');
-
-
 
     const [user, setUser] = React.useState(new User())
 
@@ -105,6 +104,7 @@ export default function DevicesScreen(props) {
                                 tags: [],
                                 on: false
                             })
+                            Coms.postDevice() //TODO send obj.
                             setDeviceName("")
                             hideDeviceDialog()
                             }}>Add</Button>
