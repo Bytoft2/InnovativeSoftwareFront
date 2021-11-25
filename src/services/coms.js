@@ -8,7 +8,7 @@ export function postDevice(dev) {
         'Accept': 'text/plain',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ dev })
+      body: JSON.stringify(dev)
     })
       .then((response) => response.json())
       .then((responseJson) => {

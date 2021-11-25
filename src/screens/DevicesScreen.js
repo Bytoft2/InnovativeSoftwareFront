@@ -55,7 +55,9 @@ export default function DevicesScreen(props) {
                 {
 
                     user.getDevices().map((dev) => {
-                        return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} />
+                        if (dev.name != null) {
+                            return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} />
+                        }
                     })
 
                 }
@@ -91,20 +93,23 @@ export default function DevicesScreen(props) {
                             onChangeText={text => setDeviceName(text)}
                         />
                         <SafeAreaView style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {buttonsListArr}
+                            {user.getTags().map((tag) => {
+                                if (tag != null) {
+                                    return <Chip key={tag} style={Styles.chip} icon="information" onPress={() => console.log('Pressed')}>{tag}</Chip>
+                                }
+                            })}
 
                         </SafeAreaView>
                     </Dialog.Content>
                     <Dialog.Actions>
                         <Button style={{ backgroundColor: Colors.main.light }} color={Colors.main.dark} onPress={() => {
                             user.addDevice({
-                                name: deviceName,
-                                deviceId: 1234,
-                                manufacturer: 0,
-                                tags: [],
-                                on: false
+                                "deviceId": 1234,
+                                "manufacturer": 0,
+                                "name": deviceName,
+                                "on": false,
+                                "tags": []
                             })
-                            Coms.postDevice() //TODO send obj.
                             setDeviceName("")
                             hideDeviceDialog()
                         }}>Add</Button>

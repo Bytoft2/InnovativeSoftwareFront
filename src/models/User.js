@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Coms from '../services/coms'
+import Device from './Device'
 
 export default class User extends React.Component {
 
@@ -12,6 +13,14 @@ export default class User extends React.Component {
         }
         Coms.getDevices.then((devs) => {
             this.state.devices = devs
+            for (var i = 0; i < devs.length; i++) {
+                var dev = devs[i]
+                if (dev.tags != null) {
+                    for (var j = 0; j < dev.tags.length; j++) {
+                        this.addTag(dev.tags[j])
+                    }
+                }
+            }
         })
     }
 
@@ -26,6 +35,7 @@ export default class User extends React.Component {
                 return
             }
         }
+        console.log("adding: " + tag)
         this.state.tags.push(tag);
     }
 
