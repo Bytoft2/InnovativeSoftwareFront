@@ -18,7 +18,6 @@ export function postDevice(dev) {
       .catch((error) => {
         console.error(error);
       })
-
   })
 }
 
@@ -57,29 +56,25 @@ export function getDevice(id) {
 
 }
 
-export function putDevice(id) {
-  fetch('http://161.35.41.122:9009/api/PowerUnit/${id}', {
-    method: 'PUT',
-    headers: {
-      'Accept': 'text/plain',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "deviceId": 0,
-      "manufacturer": 0,
-      "name": "RNTest",
-      "on": true,
-      "tags": [
-        "LivingRoom"
-      ]
+export function putDevice(dev) {
+  return new Promise(() => {
+    fetch('http://161.35.41.122:9009/api/PowerUnit/' + dev.powerUnitId, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'text/plain',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dev)
     })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        return true
+      })
+      .catch((error) => {
+        console.error(error);
+        return false
+      })
   })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
 
 }

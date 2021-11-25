@@ -56,22 +56,50 @@ export default class User extends React.Component {
     }
 
     addDevice(device) {
-        for (var i = 0; i < this.state.devices.length; i++) {
-            if (this.state.devices[i].name === device.name) {
-                return
+        return new Promise((res) => {
+            for (var i = 0; i < this.state.devices.length; i++) {
+                if (this.state.devices[i].name === device.name) {
+                    return
+                }
             }
-        }
-        Coms.postDevice(device).then((id) => {
-            device.powerUnitId = id
-            this.state.devices.push(device)
+            Coms.postDevice(device).then((id) => {
+                device.powerUnitId = id
+                this.state.devices.push(device)
+                res()
+            })
         })
-
     }
 
     removeTag(device) {
         for (var i = 0; i < this.state.devices.length; i++) {
             if (this.state.devices[i] === device) {
                 arr.splice(i, 1);
+            }
+        }
+    }
+
+    turnOn(id) {
+        for (var i = 0; i < this.state.devices.length; i++) {
+            if (id == this.state.devices[i].powerUnitId) {
+                this.state.devices[i].on = true
+                Coms.putDevice(this.state.devices[i]).then((res) => {
+                    if (!res) {
+                        this.state.devices[i].on = false
+                    }
+                })
+            }
+        }
+    }
+
+    turnOff(id) {
+        for (var i = 0; i < this.state.devices.length; i++) {
+            if (id == this.state.devices[i].powerUnitId) {
+                this.state.devices[i].on = false
+                Coms.putDevice(this.state.devices[i]).then((res) => {
+                    if (!res) {
+                        this.state.devices[i].on = true
+                    }
+                })
             }
         }
     }

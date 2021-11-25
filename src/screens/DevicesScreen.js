@@ -34,6 +34,10 @@ export default function DevicesScreen(props) {
 
     const [tags, setTags] = React.useState([]);
 
+    const [hackyUpdate, hh] = React.useState(false)
+
+    const update = () => { hh(!hackyUpdate) }
+
     const user = props.user
 
     return (
@@ -47,7 +51,17 @@ export default function DevicesScreen(props) {
 
                     user.getDevices().map((dev) => {
                         if (dev.name != null) {
-                            return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} />
+                            if (dev.on) {
+                                return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
+                                    user.turnOff(dev.powerUnitId)
+                                    update();
+                                }} />
+                            } else {
+                                return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.grey, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
+                                    user.turnOn(dev.powerUnitId)
+                                    update()
+                                }} />
+                            }
                         }
                     })
 
@@ -100,7 +114,7 @@ export default function DevicesScreen(props) {
                                 "name": deviceName,
                                 "on": false,
                                 "tags": tags
-                            })
+                            }).then(() => update())
                             setDeviceName("")
                             setTags([])
                             hideDeviceDialog()
