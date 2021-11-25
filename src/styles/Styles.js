@@ -11,6 +11,7 @@ export default StyleSheet.create({
         height: 44,
     },
     chip: {
+        margin: 5,
         height: 34
     }
 })

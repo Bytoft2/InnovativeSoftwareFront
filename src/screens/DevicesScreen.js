@@ -32,26 +32,9 @@ export default function DevicesScreen(props) {
 
     const [tagName, setTagName] = React.useState('');
 
+    const [tags, setTags] = React.useState([]);
+
     const user = props.user
-
-    const initialArr = [
-        {
-            id: 1,
-            name: "Lighting"
-        },
-        {
-            id: 2,
-            name: "Living room"
-        },
-        {
-            id: 3,
-            name: "Appliances"
-        }
-    ];
-
-    const buttonsListArr = initialArr.map((prop) => {
-        return <Chip key={prop.id} style={Styles.chip} icon="information" onPress={() => console.log('Pressed')}>{prop.name}</Chip>
-    });
 
     return (
         <PaperProvider>
@@ -103,7 +86,7 @@ export default function DevicesScreen(props) {
                         <SafeAreaView style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                             {user.getTags().map((tag) => {
                                 if (tag != null) {
-                                    return <Chip key={tag} style={Styles.chip} icon="information" onPress={() => console.log('Pressed')}>{tag}</Chip>
+                                    return <Chip key={tag} style={Styles.chip} icon="information" onPress={() => tags.push(tag)}>{tag}</Chip>
                                 }
                             })}
 
@@ -116,9 +99,10 @@ export default function DevicesScreen(props) {
                                 "manufacturer": 0,
                                 "name": deviceName,
                                 "on": false,
-                                "tags": []
+                                "tags": tags
                             })
                             setDeviceName("")
+                            setTags([])
                             hideDeviceDialog()
                         }}>Add</Button>
                     </Dialog.Actions>
