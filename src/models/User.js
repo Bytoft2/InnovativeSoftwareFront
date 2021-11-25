@@ -1,13 +1,18 @@
 import * as React from 'react';
+import * as Coms from '../services/coms'
 
 export default class User extends React.Component {
 
     constructor(props) {
         super(props)
+        console.log("Constructing...")
         this.state = {
             tags: [],
             devices: []
         }
+        Coms.getDevices.then((devs) => {
+            this.state.devices = devs
+        })
     }
 
 
@@ -36,14 +41,21 @@ export default class User extends React.Component {
         return this.state.devices;
     }
 
-    addDevice(device) {
+    addDevices(devices) {
+        this.state.devices = devices
+    }
 
+    addDevice(device) {
         for (var i = 0; i < this.state.devices.length; i++) {
             if (this.state.devices[i].name === device.name) {
                 return
             }
         }
-        this.state.devices.push(device);
+        Coms.postDevice(device).then((id) => {
+            device.powerUnitId = id
+            this.state.devices.push(device)
+        })
+
     }
 
     removeTag(device) {

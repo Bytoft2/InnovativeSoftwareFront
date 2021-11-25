@@ -10,7 +10,7 @@ export default class Device extends React.Component {
             name: props.name,
             on: props.on,
             tags: props.tags,
-            id: props.id, //The id we need to send with the request
+            powerUnitId: props.id, //The id we need to send with the request
         };
     }
 

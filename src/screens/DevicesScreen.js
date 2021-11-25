@@ -4,8 +4,6 @@ import { List, Button, TextInput, Chip, Dialog, Portal, FAB, Provider as PaperPr
 import { Colors, Spacing, Styles } from '../styles';
 import Device from '../models/Device'
 import User from '../models/User'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
-import { render } from 'react-dom';
 import * as Coms from '../services/coms'
 
 export default function DevicesScreen(props) {
@@ -26,9 +24,7 @@ export default function DevicesScreen(props) {
 
     const [deviceName, setDeviceName] = React.useState('');
 
-    const [user, setUser] = React.useState(new User())
-
-
+    const user = props.user
 
     const initialArr = [
         {
@@ -57,9 +53,12 @@ export default function DevicesScreen(props) {
             </Appbar.Header>
             <List.Section style={{ flex: 1 }}>
                 {
+
                     user.getDevices().map((dev) => {
-                        return <List.Item style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} />
-                    })}
+                        return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} />
+                    })
+
+                }
             </List.Section>
             <FAB.Group
                 open={open}
@@ -100,7 +99,8 @@ export default function DevicesScreen(props) {
                         <Button style={{ backgroundColor: Colors.main.light }} color={Colors.main.dark} onPress={() => {
                             user.addDevice({
                                 name: deviceName,
-                                id: 1234,
+                                deviceId: 1234,
+                                manufacturer: 0,
                                 tags: [],
                                 on: false
                             })

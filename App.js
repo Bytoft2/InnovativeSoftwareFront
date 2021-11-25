@@ -5,10 +5,12 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { DevicesScreen, HomeScreen } from './src/screens';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors, Spacing } from './src/styles';
+import User from './src/models/User'
 
 const Tab = createMaterialBottomTabNavigator();
 
 function MyTabs() {
+  const user = new User()
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -25,7 +27,8 @@ function MyTabs() {
           ),
         }} />
 
-      <Tab.Screen name="Devices" component={DevicesScreen}
+      <Tab.Screen name="Devices"
+        children={() => <DevicesScreen user={user} />}
         options={{
           tabBarLabel: "Devices",
           tabBarIcon: ({ color }) => (
