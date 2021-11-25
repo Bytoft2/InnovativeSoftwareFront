@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList } from 'react-native';
 import { List, Button, TextInput, Chip, Dialog, Portal, FAB, Provider as PaperProvider, Appbar } from 'react-native-paper';
-import { Colors, Spacing, Styles} from '../styles';
+import { Colors, Spacing, Styles } from '../styles';
 import Device from '../models/Device'
 import User from '../models/User'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { render } from 'react-dom';
-import  * as Coms  from '../services/coms'
+import * as Coms from '../services/coms'
 
 export default function DevicesScreen(props) {
 
@@ -19,7 +19,7 @@ export default function DevicesScreen(props) {
     const hideDeviceDialog = () => setDeviceVisible(false);
 
     const onStateChange = ({ open }) => setState({ open });
-  
+
     const { open } = state;
 
     const _handleSearch = () => console.log("Searching");
@@ -48,19 +48,19 @@ export default function DevicesScreen(props) {
     const buttonsListArr = initialArr.map((prop) => {
         return <Chip key={prop.id} style={Styles.chip} icon="information" onPress={() => console.log('Pressed')}>{prop.name}</Chip>
     });
-    
+
     return (
         <PaperProvider>
-            <Appbar.Header style={{backgroundColor: Colors.main.primary}}>
+            <Appbar.Header style={{ backgroundColor: Colors.main.primary }}>
                 <Appbar.Content title={"Devices"} />
                 <Appbar.Action icon="magnify" onPress={_handleSearch} />
             </Appbar.Header>
-                <List.Section style={{ flex: 1}}>
+            <List.Section style={{ flex: 1 }}>
                 {
-                user.getDevices().map((dev) => {
-                    return <List.Item style={{backgroundColor: Colors.main.light, marginBottom: 5}} titleStyle={{color: Colors.main.primary}} title={dev.name} />
-                })}
-                </List.Section>
+                    user.getDevices().map((dev) => {
+                        return <List.Item style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} />
+                    })}
+            </List.Section>
             <FAB.Group
                 open={open}
                 icon={open ? 'close' : 'plus'}
@@ -78,7 +78,7 @@ export default function DevicesScreen(props) {
                     },
                 ]}
                 onStateChange={onStateChange}
-                fabStyle= {{backgroundColor: Colors.main.light}}
+                fabStyle={{ backgroundColor: Colors.main.light }}
             />
             <Portal>
                 <Dialog visible={deviceVisible} onDismiss={hideDeviceDialog}>
@@ -91,13 +91,13 @@ export default function DevicesScreen(props) {
                             value={deviceName}
                             onChangeText={text => setDeviceName(text)}
                         />
-                        <SafeAreaView style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                        {buttonsListArr}
-                            
+                        <SafeAreaView style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {buttonsListArr}
+
                         </SafeAreaView>
                     </Dialog.Content>
                     <Dialog.Actions>
-                        <Button style={{backgroundColor: Colors.main.light}} color={Colors.main.dark} onPress={() => {
+                        <Button style={{ backgroundColor: Colors.main.light }} color={Colors.main.dark} onPress={() => {
                             user.addDevice({
                                 name: deviceName,
                                 id: 1234,
@@ -107,7 +107,7 @@ export default function DevicesScreen(props) {
                             Coms.postDevice() //TODO send obj.
                             setDeviceName("")
                             hideDeviceDialog()
-                            }}>Add</Button>
+                        }}>Add</Button>
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
