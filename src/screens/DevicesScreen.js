@@ -16,6 +16,12 @@ export default function DevicesScreen(props) {
 
     const hideDeviceDialog = () => setDeviceVisible(false);
 
+    const [tagVisible, setTagVisible] = React.useState(false);
+
+    const showTagDialog = () => setTagVisible(true);
+
+    const hideTagDialog = () => setTagVisible(false);
+
     const onStateChange = ({ open }) => setState({ open });
 
     const { open } = state;
@@ -23,6 +29,8 @@ export default function DevicesScreen(props) {
     const _handleSearch = () => console.log("Searching");
 
     const [deviceName, setDeviceName] = React.useState('');
+
+    const [tagName, setTagName] = React.useState('');
 
     const user = props.user
 
@@ -69,7 +77,7 @@ export default function DevicesScreen(props) {
                     {
                         icon: 'tag',
                         label: 'Tag',
-                        onPress: () => console.log("pressed Tag"),
+                        onPress: () => showTagDialog()
                     },
                     {
                         icon: 'lightbulb',
@@ -112,6 +120,28 @@ export default function DevicesScreen(props) {
                             })
                             setDeviceName("")
                             hideDeviceDialog()
+                        }}>Add</Button>
+                    </Dialog.Actions>
+                </Dialog>
+
+                <Dialog visible={tagVisible} onDismiss={hideTagDialog}>
+                    <Dialog.Title>Add tag</Dialog.Title>
+                    <Dialog.Content>
+                        <TextInput
+                            mode="outlined"
+                            label="Tag name"
+                            placeholder="Tag name"
+                            value={tagName}
+                            onChangeText={text => setTagName(text)}
+                        />
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button style={{ backgroundColor: Colors.main.light }} color={Colors.main.dark} onPress={() => {
+                            user.addTag(
+                                tagName
+                            )
+                            setTagName("")
+                            hideTagDialog()
                         }}>Add</Button>
                     </Dialog.Actions>
                 </Dialog>
