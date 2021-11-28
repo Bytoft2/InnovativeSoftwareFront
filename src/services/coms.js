@@ -76,5 +76,42 @@ export function putDevice(dev) {
         return false
       })
   })
+}
 
+export function getCo2() {
+  return new Promise((res, rej) => {
+    fetch('http://161.35.41.122:9009/api/Co2Emission', {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/plain'
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+        res(responseJson)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  })
+}
+
+export function getPrice() {
+  return new Promise((res, rej) => {
+    fetch('http://161.35.41.122:9009/api/ElectricityPrice', {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/plain'
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+        res(responseJson)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  })
 }
