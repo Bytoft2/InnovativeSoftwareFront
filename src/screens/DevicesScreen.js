@@ -54,7 +54,7 @@ export default function DevicesScreen(props) {
                             if (dev.on) {
                                 return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
                                     user.turnOff(dev.powerUnitId)
-                                    update();
+                                    update()
                                 }} />
                             } else {
                                 return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.grey, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
@@ -100,7 +100,24 @@ export default function DevicesScreen(props) {
                         <SafeAreaView style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                             {user.getTags().map((tag) => {
                                 if (tag != null) {
-                                    return <Chip key={tag} style={Styles.chip} icon="information" onPress={() => tags.push(tag)}>{tag}</Chip>
+                                    if (tags.includes(tag)) {
+                                        return <Chip key={tag} selectedColor={Colors.main.primary} style={Styles.chip} icon="information" onPress={() => {
+                                            for (var i = 0; i < tags.length; i++) {
+                                                if (tags[i] === tag) {
+                                                    tags.splice(i, 1);
+                                                }
+                                            }
+                                            console.log(tags)
+                                            update()
+                                        }}>{tag}</Chip>
+                                    }
+                                    else {
+                                        return <Chip key={tag} style={Styles.chip} icon="information" onPress={() => {
+                                            tags.push(tag)
+                                            console.log(tags)
+                                            update()
+                                        }}>{tag}</Chip>
+                                    }
                                 }
                             })}
 
