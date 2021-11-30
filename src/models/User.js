@@ -6,7 +6,6 @@ export default class User extends React.Component {
 
     constructor(props) {
         super(props)
-        console.log("Constructing...")
         this.state = {
             tags: [],
             devices: []
@@ -35,7 +34,6 @@ export default class User extends React.Component {
                 return
             }
         }
-        console.log("adding: " + tag)
         this.state.tags.push(tag);
     }
 
@@ -105,5 +103,9 @@ export default class User extends React.Component {
             }
         })
 
+    }
+
+    discoverDevices() {
+        return Coms.discoverDevices(this.state.userName, this.state.token)
     }
 }

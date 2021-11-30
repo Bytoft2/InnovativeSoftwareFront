@@ -10,7 +10,6 @@ export function postDevice(dev) {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
         res(responseJson)
       })
       .catch((error) => {
@@ -28,7 +27,6 @@ export const getDevices = new Promise((res, rej) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson)
       res(responseJson)
     })
     .catch((error) => {
@@ -45,7 +43,6 @@ export function getDevice(id) {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson)
       return responseJson
     })
     .catch((error) => {
@@ -66,7 +63,6 @@ export function putDevice(dev) {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
         return true
       })
       .catch((error) => {
@@ -86,7 +82,6 @@ export function getCo2() {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         res(responseJson)
       })
       .catch((error) => {
@@ -105,7 +100,6 @@ export function getPrice() {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         res(responseJson)
       })
       .catch((error) => {
@@ -124,8 +118,39 @@ export function flipLight(name, token, guid, state) {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         res(responseJson)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  })
+}
+
+export function discoverDevices(name, token) {
+  return new Promise((res, rej) => {
+    fetch('http://161.35.41.122:9009/api/Light/GetAllLights?userName=' + name + '&token=' + token, {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/plain'
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        var arr = []
+
+        for (let key in responseJson) {
+          let value = responseJson[key];
+          arr.push({
+            deviceId: key,
+            manufacturer: 0,
+            name: value.name,
+            on: value.state.on,
+            tags: []
+          })
+        }
+
+        res(arr)
       })
       .catch((error) => {
         console.error(error);

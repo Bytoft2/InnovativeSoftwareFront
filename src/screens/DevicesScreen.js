@@ -32,9 +32,21 @@ export default function DevicesScreen(props) {
 
     const [tagName, setTagName] = React.useState('');
 
-    const [tags, setTags] = React.useState([]);
+    const [addableDevice, setAddableDevice] = React.useState(new Device());
+
+    const [fullDeviceList, setFullDeviceList] = React.useState([]);
 
     const [hackyUpdate, hh] = React.useState(false)
+
+    const [deviceListExpanded, setDeviceListExpanded] = React.useState(false);
+
+    const handleDeviceListPress = () => setDeviceListExpanded(!deviceListExpanded);
+
+    const closeDeviceList = () => {
+        if (deviceListExpanded) {
+            handleDeviceListPress()
+        }
+    }
 
     const update = () => { hh(!hackyUpdate) }
 
@@ -77,7 +89,13 @@ export default function DevicesScreen(props) {
                     {
                         icon: 'lightbulb',
                         label: 'Device',
-                        onPress: () => showDeviceDialog(),
+                        onPress: () => {
+                            showDeviceDialog()
+                            user.discoverDevices().then((res) => {
+                                console.log(res)
+                                setFullDeviceList(res)
+                            })
+                        },
                         small: false,
                     },
                 ]}
@@ -88,6 +106,28 @@ export default function DevicesScreen(props) {
                 <Dialog visible={deviceVisible} onDismiss={hideDeviceDialog}>
                     <Dialog.Title>Add device</Dialog.Title>
                     <Dialog.Content>
+
+                        <List.Accordion
+                            title="Devices"
+                            expanded={deviceListExpanded}
+                            onPress={() => {
+                                handleDeviceListPress()
+                                console.log(deviceListExpanded)
+                            }}
+                            left={props => <List.Icon {...props} icon="lightbulb" />}>
+                            {
+                                fullDeviceList.map((dev) => {
+                                    if (dev.name != null) {
+                                        return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
+                                            setAddableDevice(dev)
+                                            setDeviceName(dev.name)
+                                            closeDeviceList
+                                        }} />
+                                    }
+                                })
+                            }
+                        </List.Accordion>
+
                         <TextInput
                             mode="outlined"
                             label="Device name"
@@ -98,21 +138,19 @@ export default function DevicesScreen(props) {
                         <SafeAreaView style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                             {user.getTags().map((tag) => {
                                 if (tag != null) {
-                                    if (tags.includes(tag)) {
+                                    if (addableDevice.tags.includes(tag)) {
                                         return <Chip key={tag} selectedColor={Colors.main.primary} style={Styles.chip} icon="information" onPress={() => {
-                                            for (var i = 0; i < tags.length; i++) {
-                                                if (tags[i] === tag) {
-                                                    tags.splice(i, 1);
+                                            for (var i = 0; i < addableDevice.tags.length; i++) {
+                                                if (addableDevice.tags[i] === tag) {
+                                                    addableDevice.tags.splice(i, 1);
                                                 }
                                             }
-                                            console.log(tags)
                                             update()
                                         }}>{tag}</Chip>
                                     }
                                     else {
                                         return <Chip key={tag} style={Styles.chip} icon="information" onPress={() => {
-                                            tags.push(tag)
-                                            console.log(tags)
+                                            addableDevice.tags.push(tag)
                                             update()
                                         }}>{tag}</Chip>
                                     }
@@ -123,15 +161,9 @@ export default function DevicesScreen(props) {
                     </Dialog.Content>
                     <Dialog.Actions>
                         <Button style={{ backgroundColor: Colors.main.light }} color={Colors.main.dark} onPress={() => {
-                            user.addDevice({
-                                "deviceId": 1234,
-                                "manufacturer": 0,
-                                "name": deviceName,
-                                "on": false,
-                                "tags": tags
-                            }).then(() => update())
+                            user.addDevice(addableDevice).then(() => update())
                             setDeviceName("")
-                            setTags([])
+                            setAddableDevice(new Device())
                             hideDeviceDialog()
                         }}>Add</Button>
                     </Dialog.Actions>

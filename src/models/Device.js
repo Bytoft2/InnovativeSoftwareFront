@@ -4,51 +4,51 @@ export default class Device extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            deviceId: props.deviceId,
-            manufacturer: props.manufacturer,
-            name: props.name,
-            on: props.on,
-            tags: props.tags,
-            powerUnitId: props.id, //The id we need to send with the request
-        };
+
+        this.deviceId = "",
+            this.manufacturer = "",
+            this.name = "",
+            this.on = "",
+            this.tags = [],
+            this.powerUnitId = ""
     }
 
+
     getTags() {
-        return this.state.tags;
+        return this.tags;
     }
 
     getName() {
-        return this.state.name;
+        return this.name;
     }
 
     addTag(tag) {
-        for (var i = 0; i < this.state.tags.length; i++) {
-            if (this.state.tags[i].name === tag.name) {
+        for (var i = 0; i < this.tags.length; i++) {
+            if (this.tags[i].name === tag.name) {
                 return
             }
         }
-        this.state.tags.push(tag);
+        this.tags.push(tag);
     }
 
     removeTag(tag) {
-        for (var i = 0; i < this.state.tags.length; i++) {
-            if (this.state.tags[i] === tag) {
+        for (var i = 0; i < this.tags.length; i++) {
+            if (this.tags[i] === tag) {
                 arr.splice(i, 1);
             }
         }
     }
 
     rename(name) {
-        this.state.name = name;
+        this.name = name;
     }
 
     setId(id) {
-        this.state.id = id;
+        this.id = id;
     }
 
     getId() {
-        return this.state.id
+        return this.id
     }
 
 }
