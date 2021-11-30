@@ -79,29 +79,31 @@ export default class User extends React.Component {
     }
 
     turnOn(id) {
-        for (var i = 0; i < this.state.devices.length; i++) {
-            if (id == this.state.devices[i].powerUnitId) {
-                this.state.devices[i].on = true
-                Coms.putDevice(this.state.devices[i]).then((res) => {
-                    if (!res) {
-                        this.state.devices[i].on = false
+        var st = this.state
+
+        return Coms.flipLight(st.userName, st.token, id, "true").then((res) => {
+            if (res) {
+                for (var i = 0; i < st.devices.length; i++) {
+                    if (id == st.devices[i].powerUnitId) {
+                        st.devices[i].on = true
                     }
-                })
+                }
             }
-        }
+        })
     }
 
     turnOff(id) {
-        for (var i = 0; i < this.state.devices.length; i++) {
-            if (id == this.state.devices[i].powerUnitId) {
-                this.state.devices[i].on = false
-                Coms.putDevice(this.state.devices[i]).then((res) => {
-                    if (!res) {
-                        this.state.devices[i].on = true
-                    }
-                })
-            }
-        }
-    }
+        var st = this.state
 
+        return Coms.flipLight(st.userName, st.token, id, "false").then((res) => {
+            if (res) {
+                for (var i = 0; i < st.devices.length; i++) {
+                    if (id == st.devices[i].powerUnitId) {
+                        st.devices[i].on = false
+                    }
+                }
+            }
+        })
+
+    }
 }

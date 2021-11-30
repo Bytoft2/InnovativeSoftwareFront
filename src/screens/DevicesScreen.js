@@ -53,13 +53,11 @@ export default function DevicesScreen(props) {
                         if (dev.name != null) {
                             if (dev.on) {
                                 return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.light, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
-                                    user.turnOff(dev.powerUnitId)
-                                    update()
+                                    user.turnOff(dev.powerUnitId).then(() => update())
                                 }} />
                             } else {
                                 return <List.Item key={dev.name} style={{ backgroundColor: Colors.main.grey, marginBottom: 5 }} titleStyle={{ color: Colors.main.primary }} title={dev.name} onPress={() => {
-                                    user.turnOn(dev.powerUnitId)
-                                    update()
+                                    user.turnOn(dev.powerUnitId).then(() => update())
                                 }} />
                             }
                         }

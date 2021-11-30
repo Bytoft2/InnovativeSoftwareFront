@@ -1,5 +1,3 @@
-import User from '../models/User'
-
 export function postDevice(dev) {
   return new Promise((res, rej) => {
     fetch('http://161.35.41.122:9009/api/PowerUnit', {
@@ -101,6 +99,25 @@ export function getPrice() {
   return new Promise((res, rej) => {
     fetch('http://161.35.41.122:9009/api/ElectricityPrice', {
       method: 'GET',
+      headers: {
+        'Accept': 'text/plain'
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+        res(responseJson)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  })
+}
+
+export function flipLight(name, token, guid, state) {
+  return new Promise((res, rej) => {
+    fetch('http://161.35.41.122:9009/api/Light?userName=' + name + '&token=' + token + '&guid=' + guid + '&turnOn=' + state, {
+      method: 'PUT',
       headers: {
         'Accept': 'text/plain'
       },
