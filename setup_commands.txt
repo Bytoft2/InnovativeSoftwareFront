@@ -1,0 +1,6 @@
+npm install react-native-safe-area-context
+npm install react-native-screens
+npm install @react-navigation/native
+npm install @react-navigation/material-bottom-tabs react-native-paper react-native-vector-icons
+
+Update User.state with userName & token
